@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div id="app">
+        <h2>{{person.name}} -- {{person.age}}</h2>
+        <h3>{{person.fav}}</h3>
+        <ul>
+            <li>1</li>
+            <li>2</li>
+            <li>3</li>
+        </ul>
+        <h3>{{msg}}</h3>
+        <div z-text="msg"></div>
+        <div z-text="person.name"></div>
+        <div z-html="htmlStr"></div>
+        <input type="text" z-model="msg">
+        <button z-on:click="handlerClick">双击on-666</button>
+        <button @click="handlerClick">双击@-888</button>
+        <img z-bind:src="imgSrc"/>
+    </div>
+<!--    <script src="./js/source/Vue.js"></script>-->
+    <script src="js/Updater.js"></script>
+    <script src="js/Watcher.js"></script>
+    <script src="js/Dep.js"></script>
+    <script src="js/Observer.js"></script>
+    <script src="js/Compile.js"></script>
+    <script src="js/Zdmvm.js"></script>
+    <script>
+        let vm = new Zdmvm({
+            el: '#app',
+            data: {
+                person: {
+                    name: 'ark',
+                    age: 28,
+                    fav: 'computer'
+                },
+                msg: '学习MVVM实现原理',
+                htmlStr: '<p>双击666</p>',
+                imgSrc: './imgs/mvvm.jpg'
+            },
+            methods: {
+                handlerClick () {
+                    console.log(this);
+                    this.msg = '学习MVVM';
+                    this.$data.person.name = 'ARK';
+                }
+            }
+        })
+    </script>
+</body>
+</html>

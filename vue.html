@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="app">
+    <h2>{{person.name}} -- {{person.age}}</h2>
+    <h3>{{person.fav}}</h3>
+    <ul>
+        <li>1</li>
+        <li>2</li>
+        <li>3</li>
+        <li>{{test}}</li>
+    </ul>
+    <h3>{{msg}}</h3>
+    <div v-text="msg"></div>
+    <div v-text="person.name"></div>
+    <div v-html="htmlStr"></div>
+    <input type="text" v-model="msg">
+    <button v-on:click="handlerClick">双击on-666</button>
+    <button @click="handlerClick">双击@-888</button>
+    <img v-bind:src="imgSrc"/>
+</div>
+<script src="./js/source/Vue.js"></script>
+<script>
+    let vm = new Vue({
+        el: '#app',
+        data: {
+            person: {
+                name: 'ark',
+                age: 28,
+                fav: 'computer'
+            },
+            test: 'test',
+            msg: '学习MVVM实现原理',
+            htmlStr: '<p>双击666</p>',
+            imgSrc: './imgs/mvvm.jpg'
+        },
+        methods: {
+            handlerClick () {
+                console.log(this);
+                this.$data.person.name = 'ARK';
+                // 把data用defineProperty重写get 和set方法后
+                this.msg = '学习MVVM';
+                this.person.age = 30;
+                alert(this.person.name);
+            }
+        }
+    })
+</script>
+</body>
+</html>

@@ -11,12 +11,36 @@ class Compile {
         // 绑定vm
         this.vm = vm;
         // 1. 获取文档随便对象，放入内存中，在渲染时调用，会减少页面的回流和重绘。文档碎片的对象就是整个的根节点，在文档碎片中替换所有的表达式后return dom
+        /**
+         * **真实DOM：**
+         * 大家都知道DOM API，例如调用documnt.createElement创建一个真实div节点插入到DOM文档流中，
+         * 这个原生API实际上是通过使用C++编写的浏览器引擎实现的，我们不需要了解C++是如何实现的，
+         * 只需要调用javascript api就可以创建真实DOM。你可以通过在浏览器打印DOM节点，会发现它包含很多属性。
+         *
+         * **虚拟DOM：**
+         * 在Vue中的虚拟DOM会在每个实例通过this.$createElement返回一个虚拟节点，
+         * 这个虚拟节点也表示一个div但他是一个纯javascript对象，他和真实DOM差异是非常大的。
+         * 看到上图虚拟DOM它除了包含当前节点名字和属性，还有children表示节点的子元素，这就构成了一个虚拟DOM树。
+         *
+         * 普及一下虚拟DOM和真实的DOM的差异：
+         * 1、 资源消耗问题
+         * 使用javascript操作真实DOM是非常消耗资源的，虽然很多浏览器做了优化但是效果不大。你看到虚拟DOM是一个纯javascript对象。
+         * 假设你有1000个节点，那会相应创建1000个节点，那也是非常节省资源的，但是如果创建1000个DOM节点就不同了。
+         * 2、执行效率问题
+         * 如果你要修改一个真实DOM，一般调用innerHTML方法，那浏览器会把旧的节点移除再添加新的节点，但是在虚拟DOM中，只需要修改一个对象的属性，
+         * 再把虚拟DOM渲染到真实DOM上。很多人会误解虚拟DOM比真实DOM速度快，其实虚拟DOM只是把DOM变更的逻辑提取出来，使用javascript计算差异，
+         * 减少了操作真实DOM的次数，只在最后一次才操作真实DOM，所以如果你的应用有复杂的DOM变更操作，虚拟DOM会比较快。
+         * 3、虚拟DOM还有其他好处
+         * 其实虚拟DOM还可以应用在其他地方，因为他们只是抽象节点，可以把它编译成其他平台，例如android、ios。
+         * 市面上利用形同架构模式的应用有React Native，Weeks，Native script，就是利用虚拟DOM的特点实现的。
+         *
+         */
         const fragment = this.node2Fragment(this.el);
-        // console.log(fragment)
+        console.log(fragment)
         // 2. 编译模板
-        this.compile(fragment);
+        // this.compile(fragment);
         // 3. 追加子元素到根元素
-        this.el.appendChild(fragment);
+        // this.el.appendChild(fragment);
     }
 
     /**
@@ -89,11 +113,11 @@ class Compile {
             // 其中  text是文本节点（空格之类的）
             if (this.isElementNode(child)) {
                 // 元素节点 ,并编译
-                // console.log('元素节点', child);
+                console.log('元素节点', child);
                 this.compileElement(child);
             } else {
                 // 文本节点，并编译
-                // console.log('文本节点', child);
+                console.log('文本节点', child);
                 this.compileText(child);
             }
             // 如果当前节点还存在子节点，并且有length属性，递归遍历

@@ -21,7 +21,7 @@ class Observer {
         }
          */
         if (data && typeof data === 'object') {
-            // console.log(Object.keys(data));
+            console.log(`observe----->`, Object.keys(data));
             Object.keys(data).forEach(key => {
                 this.defineReactive(data, key, data[key]);
             })
@@ -38,6 +38,7 @@ class Observer {
         // 递归遍历
         this.observe(value);
         const dep = new Dep();
+        console.log(dep);
         // 劫持data中的属性
         /**
          * object （必须有 操作的对象本身 这个很容易理解不传它操作谁？）
@@ -45,8 +46,8 @@ class Observer {
          * descriptor 必须有 大概是属性描述配置
          *  |- value 设置属性的值
          *  |- writable 是否可操作属性值 默认true
-         *  |- configurable 是否可修改配置 默认 true
-         *  |- enumerable 是否可枚举 默认 false
+         *  |- configurable 是否可修改配置 默认 true,可以防止被重新定义
+         *  |- enumerable 是否可枚举 默认 false,如果我们将某个属性的enumerable声明为false,当你迭代读取他们的key值时,你是没有办法读取的,同样它不会显示在对象键中
          */
         // 执行后可看到 data 下的每一个属性都有个set,get方法
         Object.defineProperty(data, key, {
@@ -54,7 +55,10 @@ class Observer {
             configurable: false,
             get () {
                 // 如果Dep.target 存在(在watcher中创建了),就在dep.中插入观察者
+                // console.log(data, key, value);
                 Dep.target && dep.addSub(Dep.target);
+                // 这里Dep.target 是null 因为在watcher中挂载后就立即销毁了,防止重复挂载
+                // console.log(dep);
                 // 订阅数据变化时,往Dep中添加观察者
                 return value;
             },

@@ -12,6 +12,7 @@
             <li>1</li>
             <li>2</li>
             <li>3</li>
+            <li>{{test}}</li>
         </ul>
         <h3>{{msg}}</h3>
         <div z-text="msg"></div>
@@ -38,6 +39,7 @@
                     age: 28,
                     fav: 'computer'
                 },
+                test: 'test',
                 msg: '学习MVVM实现原理',
                 htmlStr: '<p>双击666</p>',
                 imgSrc: './imgs/mvvm.jpg'
@@ -45,8 +47,11 @@
             methods: {
                 handlerClick () {
                     console.log(this);
-                    this.msg = '学习MVVM';
                     this.$data.person.name = 'ARK';
+                    // 把data用defineProperty重写get 和set方法后
+                    this.msg = '学习MVVM';
+                    this.person.age = 30;
+                    alert(this.person.name);
                 }
             }
         })

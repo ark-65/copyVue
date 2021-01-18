@@ -38,9 +38,9 @@ class Compile {
         const fragment = this.node2Fragment(this.el);
         console.log(fragment)
         // 2. 编译模板
-        // this.compile(fragment);
+        this.compile(fragment);
         // 3. 追加子元素到根元素
-        // this.el.appendChild(fragment);
+        this.el.appendChild(fragment);
     }
 
     /**
